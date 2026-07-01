@@ -1,5 +1,5 @@
-import { todoRepository } from '../repositories/todoRepository';
-import { AppError } from '../utils/errorHandler'; // will import dayi dengz after I connect things
+import { todoRepository } from '../repositories/todoRepository.js';
+import { AppError } from '../utils/errorHandler.js'; // will import dayi dengz after I connect things
 
 export const todoService = {
   // POST: /api/todos

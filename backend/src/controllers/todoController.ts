@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { todoService } from '../services/todoService';
-import { asyncHandler } from '../utils/errorHandler';
-import { todoSchema } from '../middleware/validate';
+import { todoService } from '../services/todoService.js';
+import { asyncHandler } from '../utils/errorHandler.js';
+import { todoSchema } from '../middleware/validate.js';
 
 export const todoController = {
   create: asyncHandler(async (req: Request, res: Response) => {

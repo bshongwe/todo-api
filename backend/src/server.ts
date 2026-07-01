@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import todoRoutes from './routes/todoRoutes';
+import todoRoutes from './routes/todoRoutes.js';
 
 const app = express();
 
