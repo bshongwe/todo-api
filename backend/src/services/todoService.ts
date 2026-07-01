@@ -22,12 +22,12 @@ export const todoService = {
   // UPDATE: /api/todos/:id
   async updateTodo(id: string, userId: string, data: any) {
     await todoService.getTodoById(id, userId);
-    return todoRepository.update(id, userId, data);
+    return todoRepository.update(id, data);
   },
 
   // DELETE: /api/todos/:id
   async deleteTodo(id: string, userId: string) {
     await todoService.getTodoById(id, userId);
-    return todoRepository.delete(id, userId);
+    return todoRepository.delete(id);
   },
 };

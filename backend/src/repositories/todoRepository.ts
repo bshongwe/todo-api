@@ -16,11 +16,11 @@ export const todoRepository = {
     return prisma.todo.findFirst({ where: { id, userId } });
   },
 
-  async update(id: string, userId: string, data: any) {
-    return prisma.todo.update({ where: { id, userId }, data });
+  async update(id: string, data: any) {
+    return prisma.todo.update({ where: { id }, data });
   },
 
-  async delete(id: string, userId: string) {
-    return prisma.todo.delete({ where: { id, userId } });
+  async delete(id: string) {
+    return prisma.todo.delete({ where: { id } });
   },
 };
