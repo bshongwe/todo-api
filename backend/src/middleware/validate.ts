@@ -7,3 +7,5 @@ export const todoSchema = z.object({
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH']).optional(),
   dueDate: z.string().datetime().optional(),
 });
+
+export const todoUpdateSchema = todoSchema.partial();
