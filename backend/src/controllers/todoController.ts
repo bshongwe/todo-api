@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import { todoService } from '../services/todoService';
 import { asyncHandler } from '../utils/errorHandler';
 import { todoSchema } from '../middleware/validate';
