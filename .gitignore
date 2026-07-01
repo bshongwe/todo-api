@@ -1,4 +1,4 @@
-gitignore# Dependencies
+# Dependencies
 node_modules/
 jspm_packages/
 web_modules/
@@ -10,6 +10,19 @@ build/
 out/
 lib/
 *.tsbuildinfo
+
+# Backend build artifacts emitted next to source files
+backend/dist/
+backend/prisma.config.js
+backend/prisma.config.js.map
+backend/prisma.config.d.ts
+backend/prisma.config.d.ts.map
+backend/src/**/*.js
+backend/src/**/*.js.map
+backend/src/**/*.d.ts
+!backend/src/types/
+!backend/src/types/**/*.d.ts
+backend/src/**/*.d.ts.map
 
 # Prevent committing compiled JS files if they live alongside source TS files
 # (Uncomment the lines below if you do NOT use a dedicated build/dist folder)
