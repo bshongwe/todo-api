@@ -5,5 +5,9 @@ export const todoService = {
   async createTodo(data: any, userId: string) {
     return todoRepository.create(data, userId);
   },
-  // ... ng'tofaka other methods later lana
+  
+  // GET: /api/todos
+  async getTodos(userId: string, filters: any = {}) {
+    return todoRepository.findAll(userId, filters);
+  },
 };
