@@ -1,13 +1,18 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../config/database.js';
 
+type TodoCreateData = Pick<Prisma.TodoUncheckedCreateInput, 'title' | 'description' | 'completed' | 'priority' | 'dueDate'>;
+type TodoUpdateData = Pick<Prisma.TodoUpdateInput, 'title' | 'description' | 'completed' | 'priority' | 'dueDate'>;
+type TodoListFilters = Pick<Prisma.TodoWhereInput, 'completed' | 'priority' | 'dueDate'>;
+
 export const todoRepository = {
-  async create(data: any, userId: string) {
+  async create(data: TodoCreateData, userId: string) {
     return prisma.todo.create({ data: { ...data, userId } });
   },
 
-  async findAll(userId: string, filters: any = {}) {
+  async findAll(userId: string, filters: TodoListFilters = {}) {
     return prisma.todo.findMany({
-      where: { userId, ...filters },
+      where: { ...filters, userId },
       orderBy: { createdAt: 'desc' },
     });
   },
@@ -16,7 +21,7 @@ export const todoRepository = {
     return prisma.todo.findFirst({ where: { id, userId } });
   },
 
-  async update(id: string, data: any) {
+  async update(id: string, data: TodoUpdateData) {
     return prisma.todo.update({ where: { id }, data });
   },
 
