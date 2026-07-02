@@ -4,6 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import type { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
+import { ZodError } from 'zod';
 import todoRoutes from './routes/todoRoutes.js';
 import { AppError } from './utils/errorHandler.js';
 
@@ -20,7 +21,7 @@ app.use(
 				return;
 			}
 
-			callback(new Error('Not allowed by CORS'));
+			callback(new AppError(403, 'Not allowed by CORS'));
 		},
 	}),
 );
@@ -47,6 +48,17 @@ app.use(
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
 	if (err instanceof AppError) {
 		res.status(err.statusCode).json({ message: err.message });
+		return;
+	}
+
+	if (err instanceof ZodError) {
+		res.status(400).json({
+			message: 'Validation failed',
+			errors: err.issues.map((issue) => ({
+				path: issue.path,
+				message: issue.message,
+			})),
+		});
 		return;
 	}
 
