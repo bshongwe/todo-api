@@ -11,21 +11,21 @@ interface TodoItemProps {
   onEdit: (todo: Todo) => void;
 }
 
-const priorityConfig: Record<Priority, { color: string; bgColor: string; icon: string }> = {
+const priorityConfig: Record<Priority, { color: string; bgColor: string; dotColor: string }> = {
   LOW: {
     color: 'text-gray-600 dark:text-gray-400',
-    bgColor: 'bg-gray-100 dark:bg-gray-800',
-    icon: '🟢',
+    bgColor: 'bg-gray-50 dark:bg-gray-800/50',
+    dotColor: 'bg-gray-400',
   },
   MEDIUM: {
-    color: 'text-yellow-600 dark:text-yellow-400',
-    bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
-    icon: '🟡',
+    color: 'text-orange-600 dark:text-orange-400',
+    bgColor: 'bg-orange-50 dark:bg-orange-900/20',
+    dotColor: 'bg-orange-500',
   },
   HIGH: {
-    color: 'text-red-600 dark:text-red-400',
-    bgColor: 'bg-red-100 dark:bg-red-900/30',
-    icon: '🔴',
+    color: 'text-rose-600 dark:text-rose-400',
+    bgColor: 'bg-rose-50 dark:bg-rose-900/20',
+    dotColor: 'bg-rose-500',
   },
 };
 
@@ -50,24 +50,26 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
   return (
     <div
       className={cn(
-        'group relative p-4 rounded-lg border transition-all duration-200',
+        'group relative p-5 rounded-2xl border-0 shadow-sm transition-all duration-300',
         todo.completed
-          ? 'bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-700'
-          : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md'
+          ? 'bg-gray-50/80 dark:bg-gray-800/30'
+          : 'bg-white dark:bg-gray-800 shadow-gray-200/50 dark:shadow-gray-900/50 hover:shadow-md'
       )}
     >
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-4">
         <button
           onClick={handleToggle}
           className={cn(
-            'mt-0.5 flex-shrink-0 transition-colors duration-200',
+            'mt-0.5 flex-shrink-0 transition-all duration-200',
             todo.completed
-              ? 'text-green-600 dark:text-green-400'
-              : 'text-gray-400 hover:text-blue-600 dark:hover:text-blue-400'
+              ? 'text-emerald-500'
+              : 'text-gray-300 hover:text-violet-600 dark:hover:text-violet-400'
           )}
         >
           {todo.completed ? (
-            <CheckCircle2 className="w-6 h-6" />
+            <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5 text-white" />
+            </div>
           ) : (
             <Circle className="w-6 h-6" />
           )}
@@ -76,21 +78,24 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
-              <h3
-                className={cn(
-                  'text-base font-medium break-words',
-                  todo.completed
-                    ? 'text-gray-500 dark:text-gray-400 line-through'
-                    : 'text-gray-900 dark:text-gray-100'
-                )}
-              >
-                {todo.title}
-              </h3>
+              <div className="flex items-center gap-2 mb-1">
+                <div className={cn('w-2 h-2 rounded-full', priority.dotColor)} />
+                <h3
+                  className={cn(
+                    'text-base font-semibold break-words',
+                    todo.completed
+                      ? 'text-gray-400 dark:text-gray-500 line-through'
+                      : 'text-gray-900 dark:text-gray-100'
+                  )}
+                >
+                  {todo.title}
+                </h3>
+              </div>
 
               {todo.description && (
                 <p
                   className={cn(
-                    'mt-1 text-sm break-words',
+                    'mt-1 text-sm break-words leading-relaxed',
                     todo.completed
                       ? 'text-gray-400 dark:text-gray-500'
                       : 'text-gray-600 dark:text-gray-400'
@@ -100,24 +105,23 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
                 </p>
               )}
 
-              <div className="mt-2 flex flex-wrap items-center gap-2">
+              <div className="mt-3 flex flex-wrap items-center gap-2">
                 <span
                   className={cn(
-                    'inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium',
+                    'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium',
                     priority.bgColor,
                     priority.color
                   )}
                 >
-                  <Flag className="w-3 h-3" />
                   {todo.priority}
                 </span>
 
                 {todo.dueDate && (
                   <span
                     className={cn(
-                      'inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium',
+                      'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium',
                       isOverdue
-                        ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400'
+                        ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
                         : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400'
                     )}
                   >
@@ -129,17 +133,17 @@ export function TodoItem({ todo, onToggle, onDelete, onEdit }: TodoItemProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
               <button
                 onClick={handleEdit}
-                className="p-2 rounded-lg text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200"
+                className="p-2 rounded-lg text-gray-400 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-violet-50 dark:hover:bg-violet-900/20 transition-all duration-200"
                 title="Edit todo"
               >
                 <Edit2 className="w-4 h-4" />
               </button>
               <button
                 onClick={handleDelete}
-                className="p-2 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
+                className="p-2 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200"
                 title="Delete todo"
               >
                 <Trash2 className="w-4 h-4" />
