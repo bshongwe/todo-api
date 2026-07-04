@@ -30,8 +30,14 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
+const sessionSecret = process.env.SESSION_SECRET;
+if (!sessionSecret) {
+  console.error('❌ SESSION_SECRET environment variable is required');
+  process.exit(1);
+}
+
 app.use(session({
-  secret: process.env.SESSION_SECRET!,
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: false,
   cookie: {
