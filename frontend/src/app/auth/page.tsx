@@ -41,17 +41,17 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-      <div className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8 space-y-6">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 px-4">
+      <div className="w-full max-w-sm bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-2xl border border-gray-200/50 dark:border-gray-700/50 p-8 space-y-6 shadow-xl">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 dark:from-violet-400 dark:to-purple-400 bg-clip-text text-transparent">
             {mode === 'login' ? 'Welcome back' : 'Create account'}
           </h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
             <button
               onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); setError(''); }}
-              className="text-blue-600 dark:text-blue-400 hover:underline font-medium"
+              className="text-violet-600 dark:text-violet-400 hover:underline font-medium"
             >
               {mode === 'login' ? 'Register' : 'Login'}
             </button>
@@ -59,7 +59,7 @@ export default function AuthPage() {
         </div>
 
         {error && (
-          <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 text-sm text-red-600 dark:text-red-400">
+          <div className="rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-3 text-sm text-red-600 dark:text-red-400">
             {error}
           </div>
         )}
@@ -72,9 +72,9 @@ export default function AuthPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className={cn(
-                'w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700',
+                'w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700',
                 'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100',
-                'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500'
               )}
             />
           )}
@@ -85,9 +85,9 @@ export default function AuthPage() {
             onChange={(e) => setEmail(e.target.value)}
             required
             className={cn(
-              'w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700',
+              'w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700',
               'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100',
-              'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500'
             )}
           />
           <input
@@ -97,18 +97,18 @@ export default function AuthPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             className={cn(
-              'w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700',
+              'w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700',
               'bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100',
-              'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500'
+              'placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500'
             )}
           />
           <button
             type="submit"
             disabled={isSubmitting}
             className={cn(
-              'w-full py-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
-              'disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200'
+              'w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-medium',
+              'focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2',
+              'disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-sm hover:shadow-md'
             )}
           >
             {isSubmitting ? 'Please wait...' : mode === 'login' ? 'Login' : 'Register'}

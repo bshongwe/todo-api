@@ -116,7 +116,9 @@ export function TodoList({}: TodoListProps) {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">My Todos</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 dark:from-violet-400 dark:to-purple-400 bg-clip-text text-transparent">
+            My Todos
+          </h1>
           <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
             {todos.filter((t) => !t.completed).length} active, {todos.filter((t) => t.completed).length} completed
           </p>
@@ -127,7 +129,7 @@ export function TodoList({}: TodoListProps) {
             setShowForm(!showForm);
             setEditingTodo(null);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium transition-colors duration-200"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white font-medium transition-all duration-200 shadow-sm hover:shadow-md"
         >
           <Plus className="w-5 h-5" />
           Add Todo
@@ -135,13 +137,13 @@ export function TodoList({}: TodoListProps) {
       </div>
 
       {error && (
-        <div className="rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-600 dark:text-red-400">
+        <div className="rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 text-sm text-red-600 dark:text-red-400">
           {error}
         </div>
       )}
 
       {(showForm || editingTodo) && (
-        <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6">
+        <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
             {editingTodo ? 'Edit Todo' : 'Create New Todo'}
           </h2>
@@ -154,14 +156,14 @@ export function TodoList({}: TodoListProps) {
         </div>
       )}
 
-      <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+      <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-5 shadow-sm">
         <div className="flex items-center gap-2 mb-4">
-          <Filter className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-          <h3 className="font-medium text-gray-900 dark:text-gray-100">Filters</h3>
+          <Filter className="w-5 h-5 text-violet-600 dark:text-violet-400" />
+          <h3 className="font-semibold text-gray-900 dark:text-gray-100">Filters</h3>
           {activeFiltersCount > 0 && (
             <button
               onClick={clearFilters}
-              className="ml-auto text-sm text-blue-600 dark:text-blue-400 hover:underline"
+              className="ml-auto text-sm text-violet-600 dark:text-violet-400 hover:underline font-medium"
             >
               Clear all
             </button>
@@ -181,7 +183,7 @@ export function TodoList({}: TodoListProps) {
                   e.target.value ? e.target.value : ''
                 )
               }
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-500"
             >
               <option value="">All</option>
               <option value="false">Active</option>
@@ -196,7 +198,7 @@ export function TodoList({}: TodoListProps) {
             <select
               value={filter.priority || ''}
               onChange={(e) => handleFilterChange('priority', e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-500"
             >
               <option value="">All</option>
               <option value="LOW">Low</option>
@@ -213,7 +215,7 @@ export function TodoList({}: TodoListProps) {
               type="date"
               value={filter.dueDate || ''}
               onChange={(e) => handleFilterChange('dueDate', e.target.value)}
-              className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-violet-500"
             />
           </div>
         </div>
@@ -240,11 +242,11 @@ export function TodoList({}: TodoListProps) {
       {isLoading ? (
         <LoadingSkeleton />
       ) : todos.length === 0 ? (
-        <div className="text-center py-12 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-700">
-          <p className="text-gray-500 dark:text-gray-400">No todos found</p>
+        <div className="text-center py-16 rounded-2xl border-2 border-dashed border-gray-300 dark:border-gray-700">
+          <p className="text-gray-500 dark:text-gray-400 text-lg">No todos found</p>
           <button
             onClick={() => setShowForm(true)}
-            className="mt-4 inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline"
+            className="mt-4 inline-flex items-center gap-2 text-violet-600 dark:text-violet-400 hover:underline font-medium"
           >
             <Plus className="w-4 h-4" />
             Create your first todo
