@@ -2,11 +2,22 @@
 
 import { Moon, Sun, CheckSquare } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useAuth } from '@/components/AuthProvider';
+import { api } from '@/lib/api';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
+  const { user, setUser } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await api.logout();
+    setUser(null);
+    router.push('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
@@ -22,12 +33,32 @@ export function Header() {
           </Link>
 
           <nav className="flex items-center gap-4">
-            <Link
-              href="/todos"
-              className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
-            >
-              Todos
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  href="/todos"
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+                >
+                  Todos
+                </Link>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {user.name ?? user.email}
+                </span>
+                <button
+                  onClick={handleLogout}
+                  className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/auth"
+                className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200"
+              >
+                Login / Register
+              </Link>
+            )}
 
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}

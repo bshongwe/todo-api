@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { CreateTodoDto, Priority } from '@/types/todo';
@@ -19,6 +19,13 @@ export function TodoForm({ onSubmit, onCancel, initialData, isEditing = false }:
   const [dueDate, setDueDate] = useState(initialData?.dueDate || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setTitle(initialData?.title ?? '');
+    setDescription(initialData?.description ?? '');
+    setPriority(initialData?.priority ?? 'MEDIUM');
+    setDueDate(initialData?.dueDate ?? '');
+  }, [initialData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

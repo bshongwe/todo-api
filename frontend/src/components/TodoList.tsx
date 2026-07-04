@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Filter, Plus, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { api } from '@/lib/api';
@@ -10,11 +10,9 @@ import { TodoForm } from './TodoForm';
 import { useToast } from './Toast';
 import { LoadingSkeleton } from './LoadingSkeleton';
 
-interface TodoListProps {
-  userId: string;
-}
+interface TodoListProps {}
 
-export function TodoList({ userId }: TodoListProps) {
+export function TodoList({}: TodoListProps) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,34 +21,27 @@ export function TodoList({ userId }: TodoListProps) {
   const [filter, setFilter] = useState<TodoQueryParams>({});
   const { showToast } = useToast();
 
-  const loadTodos = async () => {
+  const loadTodos = useCallback(async () => {
     setIsLoading(true);
     setError('');
-
     const response = await api.getTodos(filter);
-
     if (response.error) {
       setError(response.error);
     } else if (response.data) {
       setTodos(response.data);
     }
-
     setIsLoading(false);
-  };
+  }, [filter]);
 
   useEffect(() => {
     loadTodos();
-  }, [filter]);
+  }, [loadTodos]);
 
   const handleCreate = async (data: Parameters<typeof api.createTodo>[0]) => {
     const response = await api.createTodo(data);
-
-    if (response.error) {
-      throw new Error(response.error);
-    }
-
+    if (response.error) throw new Error(response.error);
     if (response.data) {
-      setTodos([response.data, ...todos]);
+      setTodos((prev) => [response.data!, ...prev]);
       setShowForm(false);
       showToast('Todo created successfully', 'success');
     }
@@ -58,13 +49,9 @@ export function TodoList({ userId }: TodoListProps) {
 
   const handleUpdate = async (id: string, data: Parameters<typeof api.updateTodo>[1]) => {
     const response = await api.updateTodo(id, data);
-
-    if (response.error) {
-      throw new Error(response.error);
-    }
-
+    if (response.error) throw new Error(response.error);
     if (response.data) {
-      setTodos(todos.map((todo) => (todo.id === id ? response.data! : todo)));
+      setTodos((prev) => prev.map((todo) => (todo.id === id ? response.data! : todo)));
       setEditingTodo(null);
       showToast('Todo updated successfully', 'success');
     }
@@ -73,23 +60,20 @@ export function TodoList({ userId }: TodoListProps) {
   const handleToggle = async (id: string) => {
     const todo = todos.find((t) => t.id === id);
     if (!todo) return;
-
     const response = await api.updateTodo(id, { completed: !todo.completed });
-
     if (response.error) {
       setError(response.error);
     } else if (response.data) {
-      setTodos(todos.map((t) => (t.id === id ? response.data! : t)));
+      setTodos((prev) => prev.map((t) => (t.id === id ? response.data! : t)));
     }
   };
 
   const handleDelete = async (id: string) => {
     const response = await api.deleteTodo(id);
-
     if (response.error) {
       setError(response.error);
     } else {
-      setTodos(todos.filter((t) => t.id !== id));
+      setTodos((prev) => prev.filter((t) => t.id !== id));
       showToast('Todo deleted successfully', 'success');
     }
   };
@@ -106,7 +90,9 @@ export function TodoList({ userId }: TodoListProps) {
   const handleFilterChange = (key: keyof TodoQueryParams, value: string) => {
     setFilter((prev) => ({
       ...prev,
-      [key]: value || undefined,
+      [key]: key === 'completed'
+        ? (value === 'true' ? true : value === 'false' ? false : undefined)
+        : (value || undefined),
     }));
   };
 

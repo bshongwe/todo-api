@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, createContext, useContext } from 'react';
+import { useState, useEffect, useRef, createContext, useContext } from 'react';
 import { CheckCircle2, XCircle, Info, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -18,15 +18,23 @@ interface ToastProps {
 }
 
 export function Toast({ toasts, onRemove }: ToastProps) {
+  const timersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
+
   useEffect(() => {
     toasts.forEach((toast) => {
+      if (timersRef.current.has(toast.id)) return;
       const timer = setTimeout(() => {
         onRemove(toast.id);
+        timersRef.current.delete(toast.id);
       }, 5000);
-
-      return () => clearTimeout(timer);
+      timersRef.current.set(toast.id, timer);
     });
   }, [toasts, onRemove]);
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => timers.forEach((t) => clearTimeout(t));
+  }, []);
 
   if (toasts.length === 0) return null;
 
@@ -85,7 +93,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   const showToast = (message: string, type: ToastType = 'info') => {
-    const id = Date.now().toString();
+    const id = crypto.randomUUID();
     setToasts((prev) => [...prev, { id, message, type }]);
   };
 
