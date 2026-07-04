@@ -11,6 +11,9 @@ const SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const SALT_ROUNDS = 12;
 
 const createSession = async (req: Request, userId: string) => {
+  await new Promise<void>((resolve, reject) =>
+    req.session.regenerate((err) => (err ? reject(err) : resolve()))
+  );
   const session = await prisma.session.create({
     data: { userId, expiresAt: new Date(Date.now() + SESSION_TTL_MS) },
   });
@@ -25,10 +28,16 @@ router.post('/register', asyncHandler(async (req: Request, res: Response) => {
   if (existing) throw new AppError(409, 'Email already in use');
 
   const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-  const user = await prisma.user.create({ data: { email, passwordHash, name: name ?? null } });
-
-  await createSession(req, user.id);
-  res.status(201).json({ id: user.id, email: user.email, name: user.name });
+  try {
+    const user = await prisma.user.create({ data: { email, passwordHash, name: name ?? null } });
+    await createSession(req, user.id);
+    res.status(201).json({ id: user.id, email: user.email, name: user.name });
+  } catch (error) {
+    if (error instanceof Error && 'code' in error && error.code === 'P2002') {
+      throw new AppError(409, 'Email already in use');
+    }
+    throw error;
+  }
 }));
 
 // POST /api/auth/login
