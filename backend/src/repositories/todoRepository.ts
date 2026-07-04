@@ -1,9 +1,27 @@
-import { Prisma } from '@prisma/client';
 import prisma from '../config/database.js';
+import type { Priority } from '@prisma/client';
 
-type TodoCreateData = Pick<Prisma.TodoUncheckedCreateInput, 'title' | 'description' | 'completed' | 'priority' | 'dueDate'>;
-type TodoUpdateData = Pick<Prisma.TodoUpdateInput, 'title' | 'description' | 'completed' | 'priority' | 'dueDate'>;
-type TodoListFilters = Pick<Prisma.TodoWhereInput, 'completed' | 'priority' | 'dueDate'>;
+interface TodoCreateData {
+  title: string;
+  description?: string | null;
+  completed?: boolean;
+  priority?: Priority;
+  dueDate?: Date | null;
+}
+
+interface TodoUpdateData {
+  title?: string;
+  description?: string | null;
+  completed?: boolean;
+  priority?: Priority;
+  dueDate?: Date | null;
+}
+
+interface TodoListFilters {
+  completed?: boolean;
+  priority?: Priority;
+  dueDate?: Date;
+}
 
 export const todoRepository = {
   async create(data: TodoCreateData, userId: string) {

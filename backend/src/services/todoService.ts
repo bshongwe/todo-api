@@ -1,31 +1,33 @@
 import { todoRepository } from '../repositories/todoRepository.js';
 import { AppError } from '../utils/errorHandler.js';
 
+type CreateData = Parameters<typeof todoRepository.create>[0];
+type UpdateData = Parameters<typeof todoRepository.update>[1];
+type Filters = Parameters<typeof todoRepository.findAll>[1];
+
 export const todoService = {
-  // POST: /api/todos
-  async createTodo(data: any, userId: string) {
+  async createTodo(data: CreateData, userId: string) {
     return todoRepository.create(data, userId);
   },
-  
-  // GET: /api/todos
-  async getTodos(userId: string, filters: any = {}) {
-    return todoRepository.findAll(userId, filters);
+
+  async getTodos(userId: string, filters: Filters = {}) {
+    const where = Object.fromEntries(
+      Object.entries(filters).filter(([, v]) => v !== undefined)
+    ) as Filters;
+    return todoRepository.findAll(userId, where);
   },
   
-  // GET: /api/todos/:id
   async getTodoById(id: string, userId: string) {
     const todo = await todoRepository.findById(id, userId);
     if (!todo) throw new AppError(404, 'Todo not found');
     return todo;
   },
 
-  // UPDATE: /api/todos/:id
-  async updateTodo(id: string, userId: string, data: any) {
+  async updateTodo(id: string, userId: string, data: UpdateData) {
     await todoService.getTodoById(id, userId);
     return todoRepository.update(id, data);
   },
 
-  // DELETE: /api/todos/:id
   async deleteTodo(id: string, userId: string) {
     await todoService.getTodoById(id, userId);
     return todoRepository.delete(id);
