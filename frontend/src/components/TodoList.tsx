@@ -39,8 +39,12 @@ export function TodoList({}: TodoListProps) {
 
   const handleCreate = async (data: Parameters<typeof api.createTodo>[0]) => {
     const response = await api.createTodo(data);
-    if (response.error) throw new Error(response.error);
+    if (response.error) {
+      setError(response.error);
+      throw new Error(response.error);
+    }
     if (response.data) {
+      setError('');
       setTodos((prev) => [response.data!, ...prev]);
       setShowForm(false);
       showToast('Todo created successfully', 'success');
@@ -49,8 +53,12 @@ export function TodoList({}: TodoListProps) {
 
   const handleUpdate = async (id: string, data: Parameters<typeof api.updateTodo>[1]) => {
     const response = await api.updateTodo(id, data);
-    if (response.error) throw new Error(response.error);
+    if (response.error) {
+      setError(response.error);
+      throw new Error(response.error);
+    }
     if (response.data) {
+      setError('');
       setTodos((prev) => prev.map((todo) => (todo.id === id ? response.data! : todo)));
       setEditingTodo(null);
       showToast('Todo updated successfully', 'success');
@@ -64,6 +72,7 @@ export function TodoList({}: TodoListProps) {
     if (response.error) {
       setError(response.error);
     } else if (response.data) {
+      setError('');
       setTodos((prev) => prev.map((t) => (t.id === id ? response.data! : t)));
     }
   };
@@ -73,6 +82,7 @@ export function TodoList({}: TodoListProps) {
     if (response.error) {
       setError(response.error);
     } else {
+      setError('');
       setTodos((prev) => prev.filter((t) => t.id !== id));
       showToast('Todo deleted successfully', 'success');
     }
@@ -100,7 +110,7 @@ export function TodoList({}: TodoListProps) {
     setFilter({});
   };
 
-  const activeFiltersCount = Object.values(filter).filter(Boolean).length;
+  const activeFiltersCount = Object.values(filter).filter((v) => v !== undefined).length;
 
   return (
     <div className="space-y-6">

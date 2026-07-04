@@ -14,9 +14,12 @@ export function Header() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    await api.logout();
-    setUser(null);
-    router.push('/');
+    try {
+      await api.logout();
+    } finally {
+      setUser(null);
+      router.push('/');
+    }
   };
 
   return (

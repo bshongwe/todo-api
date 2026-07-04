@@ -31,8 +31,13 @@ export default function AuthPage() {
       return;
     }
 
-    setUser(res.data!);
-    router.push('/todos');
+    if (res.data) {
+      setUser(res.data);
+      router.push('/todos');
+    } else {
+      setError('Authentication failed');
+      setIsSubmitting(false);
+    }
   };
 
   return (
