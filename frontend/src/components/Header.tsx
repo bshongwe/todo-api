@@ -7,11 +7,17 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
 import { api } from '@/lib/api';
+import { useEffect, useState } from 'react';
 
 export function Header() {
   const { theme, setTheme } = useTheme();
   const { user, setUser } = useAuth();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -67,13 +73,15 @@ export function Header() {
             <button
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
               className={cn(
-                'p-2 rounded-lg transition-all duration-200',
-                'text-gray-600 dark:text-gray-400',
-                'hover:bg-gray-100 dark:hover:bg-gray-800'
+                'p-2.5 rounded-xl transition-all duration-200 cursor-pointer',
+                'text-gray-700 dark:text-gray-300',
+                'hover:bg-violet-100 dark:hover:bg-violet-900/30',
+                'hover:text-violet-600 dark:hover:text-violet-400'
               )}
               aria-label="Toggle theme"
+              type="button"
             >
-              {theme === 'dark' ? (
+              {mounted && theme === 'dark' ? (
                 <Sun className="w-5 h-5" />
               ) : (
                 <Moon className="w-5 h-5" />
