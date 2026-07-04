@@ -38,6 +38,12 @@ A modern, beautiful todo application built with Next.js 16, TypeScript, and Tail
 
 ## Installation
 
+### Prerequisites
+
+Ensure the backend and database are running (see main README.md for setup instructions)
+
+### Frontend Setup
+
 1. **Install dependencies:**
    ```bash
    npm install

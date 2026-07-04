@@ -31,6 +31,25 @@ Express.js backend API with TypeScript, Prisma ORM, and PostgreSQL database.
 
 ## Installation
 
+### Database Setup with Docker
+
+1. **From the project root, create Docker environment file:**
+   ```bash
+   cp ../.env.docker.example ../.env.docker
+   ```
+
+2. **Start PostgreSQL:**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Verify database is running:**
+   ```bash
+   docker-compose ps
+   ```
+
+### Backend Setup
+
 1. **Install dependencies:**
    ```bash
    npm install
