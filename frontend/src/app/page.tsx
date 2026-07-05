@@ -29,7 +29,7 @@ export default function Home() {
             </span>
           </h1>
           <p className="max-w-lg text-lg leading-8 text-gray-600 dark:text-gray-400">
-            A modern, beautiful todo application to help you stay organized and productive. Built with Next.js and TypeScript.
+            A modern, beautiful todo application to help you stay organized and productive. My Lil Bro made me build this. LOL.
           </p>
           <Link
             href="/todos"
