@@ -1,9 +1,10 @@
-import Image from "next/image";
+'use client';
+
 import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 font-sans">
+    <div className="flex flex-col flex-1 items-center justify-center bg-gradient-to-br from-violet-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 font-sans overflow-hidden">
       <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center py-20 px-8 sm:items-start">
         <div className="w-20 h-20 mb-8 rounded-2xl bg-gradient-to-br from-violet-600 to-purple-600 flex items-center justify-center shadow-lg">
           <svg
@@ -40,7 +41,79 @@ export default function Home() {
             </svg>
           </Link>
         </div>
+
+        {/* Floating Notebook Animation */}
+        <div className="mt-12 flex justify-center pointer-events-none">
+          <div className="animate-float-notebook opacity-0">
+            <div className="w-24 h-32 bg-gradient-to-br from-violet-500 to-purple-600 rounded-lg shadow-2xl flex items-center justify-center">
+              <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Floating Mini List Animation */}
+        <div className="mt-8 flex justify-center pointer-events-none">
+          <div className="animate-float-list opacity-0">
+            <div className="w-48 bg-white dark:bg-gray-800 rounded-lg shadow-2xl p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-violet-500"></div>
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded flex-1"></div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-emerald-500"></div>
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded flex-1"></div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-4 h-4 rounded-full bg-orange-500"></div>
+                <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded flex-1"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </main>
+
+      <style jsx>{`
+        @keyframes floatNotebook {
+          0%, 100% {
+            opacity: 0;
+            transform: translateY(20px) rotate(-5deg);
+          }
+          10%, 70% {
+            opacity: 1;
+            transform: translateY(0) rotate(-5deg);
+          }
+          80%, 90% {
+            opacity: 0;
+            transform: translateY(-20px) rotate(-5deg);
+          }
+        }
+
+        @keyframes floatList {
+          0%, 100% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+          }
+          10%, 70% {
+            opacity: 1;
+            transform: translateY(0) scale(0.9);
+          }
+          80%, 90% {
+            opacity: 0;
+            transform: translateY(-20px) scale(0.9);
+          }
+        }
+
+        .animate-float-notebook {
+          animation: floatNotebook 14s ease-in-out infinite;
+        }
+
+        .animate-float-list {
+          animation: floatList 14s ease-in-out infinite;
+          animation-delay: 7s;
+        }
+      `}</style>
     </div>
   );
 }
